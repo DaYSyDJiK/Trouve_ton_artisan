@@ -43,7 +43,7 @@ export default function Footer() {
         <hr />
 
         <p className="text-center mb-0">
-          © 2025 Région Auvergne-Rhône-Alpes
+          © 2026 Région Auvergne-Rhône-Alpes
         </p>
 
       </div>
