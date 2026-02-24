@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import ArtisanCard from "../components/ArtisanCard";
+import useSEO from "../hooks/useSEO";
 
 export default function ArtisanDetail() {
   const { id } = useParams();
@@ -17,6 +18,11 @@ export default function ArtisanDetail() {
     siteWeb: "https://chocolaterie-labbe.fr",
     imageUrl: "https://via.placeholder.com/800x450?text=Artisan",
   };
+
+  useSEO({
+    title: `${artisan.nom} | Trouve ton artisan`,
+    description: `${artisan.nom}, ${artisan.specialite} à ${artisan.ville}. Consultez sa fiche et contactez-le directement.`
+  });
 
   return (
     <section className="container my-4">

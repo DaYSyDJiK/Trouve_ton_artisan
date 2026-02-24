@@ -1,4 +1,5 @@
 import ArtisanCard from "../components/ArtisanCard";
+import useSEO from "../hooks/useSEO";
 
 export default function Home() {
   // Placeholder (plus tard = API /artisans/top)
@@ -7,6 +8,12 @@ export default function Home() {
     { id: 2, nom: "Nom de l'artisan", note: 4.8, specialite: "Spécialité", ville: "Ville" },
     { id: 3, nom: "Nom de l'artisan", note: 4.2, specialite: "Spécialité", ville: "Ville" },
   ];
+
+    useSEO({
+    title: "Trouve ton artisan | Région Auvergne-Rhône-Alpes",
+    description:
+      "Trouvez un artisan en Auvergne-Rhône-Alpes par catégorie. Consultez sa fiche et contactez-le facilement via notre formulaire sécurisé."
+  });
 
   return (
     <section className="container my-4">

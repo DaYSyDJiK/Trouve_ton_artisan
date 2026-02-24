@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import ArtisanCard from "../components/ArtisanCard";
+import useSEO from "../hooks/useSEO";
 
 export default function ArtisanList() {
   const [params] = useSearchParams();
@@ -17,6 +18,15 @@ export default function ArtisanList() {
     ? artisans.filter((a) => a.nom.toLowerCase().includes(search))
     : artisans;
 
+    useSEO({
+    title: search
+      ? `Recherche "${search}" | Trouve ton artisan`
+      : "Liste des artisans | Trouve ton artisan",
+    description: search
+      ? `Résultats de recherche pour "${search}" parmi les artisans de la région Auvergne-Rhône-Alpes.`
+      : "Consultez la liste des artisans disponibles en Auvergne-Rhône-Alpes."
+  });
+  
   return (
     <section className="container my-4">
       <h1 className="mb-2">Liste des artisans</h1>
