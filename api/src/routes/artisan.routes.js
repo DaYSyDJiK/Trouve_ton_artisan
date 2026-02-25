@@ -20,7 +20,7 @@ router.get("/top", async (req, res) => {
 
         res.json(top);
     } catch (e) {
-        console.error("❌ /artisans error:", e);
+        console.error(" /artisans error:", e);
         res.status(500).json({ message: "Erreur serveur", error: e.message });
     }
 });
@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
 
         res.json(artisans);
     } catch (e) {
-        console.error("❌ /artisans error:", e);
+        console.error(" /artisans error:", e);
         res.status(500).json({ message: "Erreur serveur", error: e.message });
     }
 });
@@ -71,7 +71,7 @@ router.get("/:id", async (req, res) => {
 
         res.json(artisan);
     } catch (e) {
-        console.error("❌ /artisans error:", e);
+        console.error(" /artisans error:", e);
         res.status(500).json({ message: "Erreur serveur", error: e.message });
     }
 });
