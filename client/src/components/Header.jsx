@@ -1,22 +1,45 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { apiGet } from "../services/api";
+
+function slugify(text) {
+  return (text || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/'/g, "-")
+    .replace(/\s+/g, "-");
+}
 
 export default function Header() {
   const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [errorCat, setErrorCat] = useState("");
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function loadCategories() {
+      try {
+        const data = await apiGet("/categories");
+        setCategories(data);
+      } catch (e) {
+        setErrorCat(e.message || "Erreur catégories");
+      }
+    }
+
+    loadCategories();
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
-
     const q = search.trim();
 
-    // Si l'utilisateur n'a rien tapé => on va sur la liste complète
     if (!q) {
       navigate("/artisans");
       return;
     }
 
-    // Sinon => on va sur /artisans?search=...
     navigate(`/artisans?search=${encodeURIComponent(q)}`);
   }
 
@@ -49,20 +72,19 @@ export default function Header() {
           </form>
         </div>
 
-        {/* Ligne 2 : menu */}
-        <nav className="d-flex gap-3">
-          <NavLink to="/categorie/batiment" className="text-decoration-none">
-            Bâtiment
-          </NavLink>
-          <NavLink to="/categorie/services" className="text-decoration-none">
-            Services
-          </NavLink>
-          <NavLink to="/categorie/fabrication" className="text-decoration-none">
-            Fabrication
-          </NavLink>
-          <NavLink to="/categorie/alimentation" className="text-decoration-none">
-            Alimentation
-          </NavLink>
+        {/* Ligne 2 : menu dynamique */}
+        <nav className="d-flex gap-3 flex-wrap">
+          {errorCat ? <span className="text-danger">{errorCat}</span> : null}
+
+          {categories.map((c) => (
+            <NavLink
+              key={c.id}
+              to={`/categorie/${slugify(c.nom)}`}
+              className="text-decoration-none"
+            >
+              {c.nom}
+            </NavLink>
+          ))}
         </nav>
       </div>
     </header>

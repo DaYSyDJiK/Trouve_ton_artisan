@@ -1,19 +1,46 @@
+import { useEffect, useState } from "react";
 import ArtisanCard from "../components/ArtisanCard";
 import useSEO from "../hooks/useSEO";
+import { apiGet } from "../services/api";
 
 export default function Home() {
-  // Placeholder (plus tard = API /artisans/top)
-  const topArtisans = [
-    { id: 1, nom: "Nom de l'artisan", note: 4.5, specialite: "Spécialité", ville: "Ville" },
-    { id: 2, nom: "Nom de l'artisan", note: 4.8, specialite: "Spécialité", ville: "Ville" },
-    { id: 3, nom: "Nom de l'artisan", note: 4.2, specialite: "Spécialité", ville: "Ville" },
-  ];
+  const [topArtisans, setTopArtisans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    useSEO({
+  useSEO({
     title: "Trouve ton artisan | Région Auvergne-Rhône-Alpes",
     description:
       "Trouvez un artisan en Auvergne-Rhône-Alpes par catégorie. Consultez sa fiche et contactez-le facilement via notre formulaire sécurisé."
   });
+
+  useEffect(() => {
+    async function loadTopArtisans() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const data = await apiGet("/artisans/top");
+
+        // On adapte à la structure renvoyée par ton API
+        const formatted = data.map((a) => ({
+          id: a.id,
+          nom: a.nom,
+          note: Number(a.note),
+          specialite: a?.Specialite?.nom || "—",
+          ville: a.ville,
+        }));
+
+        setTopArtisans(formatted);
+      } catch (e) {
+        setError(e.message || "Erreur lors du chargement");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadTopArtisans();
+  }, []);
 
   return (
     <section className="container my-4">
@@ -49,8 +76,10 @@ export default function Home() {
       <div className="my-5">
         <div className="d-flex align-items-baseline justify-content-between gap-3">
           <h2 className="mb-3">Artisans du mois</h2>
-          <small className="text-muted">(Dynamique plus tard via l’API)</small>
         </div>
+
+        {loading && <p>Chargement...</p>}
+        {error && <p className="text-danger">{error}</p>}
 
         <div className="row g-3">
           {topArtisans.map((a) => (
@@ -61,6 +90,7 @@ export default function Home() {
                 note={a.note}
                 specialite={a.specialite}
                 ville={a.ville}
+                to={`/artisans/${a.id}`}
               />
             </div>
           ))}

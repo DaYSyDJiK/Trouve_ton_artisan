@@ -1,43 +1,99 @@
-import { useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import ArtisanCard from "../components/ArtisanCard";
 import useSEO from "../hooks/useSEO";
+import { apiGet } from "../services/api";
+
+// transforme "Bâtiment" -> "batiment"
+function slugify(text) {
+  return (text || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // enlève accents
+    .replace(/'/g, "-")
+    .replace(/\s+/g, "-");
+}
 
 export default function ArtisanList() {
+  const { slug } = useParams(); // existe seulement sur /categorie/:slug
   const [params] = useSearchParams();
-  const search = (params.get("search") || "").toLowerCase();
+  const search = params.get("search") || "";
 
-  // Placeholder : plus tard => fetch API /artisans?search=
-  const artisans = [
-    { id: 1, nom: "Au pain chaud", note: 4.8, specialite: "Boulanger", ville: "Montélimar" },
-    { id: 2, nom: "Chocolaterie Labbé", note: 4.9, specialite: "Chocolatier", ville: "Lyon" },
-    { id: 3, nom: "Orville Salmons", note: 5.0, specialite: "Chauffagiste", ville: "Evian" },
-    { id: 4, nom: "CM Graphisme", note: 4.4, specialite: "Webdesign", ville: "Valence" },
-  ];
+  const [artisans, setArtisans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const filtered = search
-    ? artisans.filter((a) => a.nom.toLowerCase().includes(search))
-    : artisans;
+  // URL API selon search (catégorie sera filtrée côté front)
+  const url = useMemo(() => {
+    const q = search.trim();
+    return q ? `/artisans?search=${encodeURIComponent(q)}` : "/artisans";
+  }, [search]);
 
-    useSEO({
-    title: search
+  useEffect(() => {
+    async function load() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const data = await apiGet(url);
+        setArtisans(data);
+      } catch (e) {
+        setError(e.message || "Erreur lors du chargement");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    load();
+  }, [url]);
+
+  // ✅ Filtrage catégorie (si slug présent)
+  const filtered = useMemo(() => {
+    if (!slug) return artisans;
+
+    return artisans.filter((a) => {
+      const catName = a?.Specialite?.Categorie?.nom || "";
+      return slugify(catName) === slug;
+    });
+  }, [artisans, slug]);
+
+  const pageTitle = slug ? `Catégorie : ${slug}` : "Liste des artisans";
+
+  useSEO({
+    title: slug
+      ? `Catégorie ${slug} | Trouve ton artisan`
+      : search
       ? `Recherche "${search}" | Trouve ton artisan`
       : "Liste des artisans | Trouve ton artisan",
-    description: search
-      ? `Résultats de recherche pour "${search}" parmi les artisans de la région Auvergne-Rhône-Alpes.`
-      : "Consultez la liste des artisans disponibles en Auvergne-Rhône-Alpes."
+    description: slug
+      ? `Découvrez les artisans de la catégorie ${slug} en Auvergne-Rhône-Alpes.`
+      : search
+      ? `Résultats de recherche pour "${search}" parmi les artisans.`
+      : "Consultez la liste des artisans en Auvergne-Rhône-Alpes.",
   });
-  
+
   return (
     <section className="container my-4">
-      <h1 className="mb-2">Liste des artisans</h1>
+      <h1 className="mb-2">{pageTitle}</h1>
+
+      {slug ? (
+        <p className="text-muted">
+          Affichage des artisans de la catégorie : <strong>{slug}</strong>
+        </p>
+      ) : null}
 
       {search ? (
         <p className="text-muted">
-          Résultats pour : <strong>{params.get("search")}</strong>
+          Recherche : <strong>{search}</strong>
         </p>
-      ) : (
-        <p className="text-muted">Affichage de tous les artisans.</p>
-      )}
+      ) : null}
+
+      {loading ? <p>Chargement...</p> : null}
+      {error ? <p className="text-danger">Erreur : {error}</p> : null}
+
+      {!loading && !error && filtered.length === 0 ? (
+        <p>Aucun artisan trouvé.</p>
+      ) : null}
 
       <div className="row g-3 mt-2">
         {filtered.map((a) => (
@@ -45,18 +101,14 @@ export default function ArtisanList() {
             <ArtisanCard
               id={a.id}
               nom={a.nom}
-              note={a.note}
-              specialite={a.specialite}
+              note={Number(a.note)}
+              specialite={a?.Specialite?.nom || "—"}
               ville={a.ville}
               to={`/artisans/${a.id}`}
             />
           </div>
         ))}
       </div>
-
-      {filtered.length === 0 ? (
-        <p className="mt-4">Aucun artisan ne correspond à votre recherche.</p>
-      ) : null}
     </section>
   );
 }
