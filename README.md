@@ -1,4 +1,4 @@
-# Trouve_ton_artisan# 🛠 Trouve ton artisan
+# Trouve_ton_artisan
 
 Plateforme web développée pour la Région Auvergne-Rhône-Alpes permettant de rechercher un artisan par catégorie, consulter sa fiche détaillée et le contacter via un formulaire sécurisé.
 
