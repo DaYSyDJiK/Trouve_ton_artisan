@@ -1,16 +1,23 @@
 const router = require("express").Router();
 const { Artisan } = require("../models");
 const { sendMail } = require("../services/mailer");
+const rateLimit = require("express-rate-limit");
 
 
 function isEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
 
-router.post("/", async (req, res) => {
+const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 min
+  max: 5, // 5 requêtes
+  message: { message: "Trop de tentatives, réessayez plus tard." },
+});
+
+router.post("/", contactLimiter, async (req, res) => {
   try {
     const { name, email, subject, message, artisanId } = req.body;
-
+    
     // 1) validations simples
     if (!name || !email || !subject || !message || !artisanId) {
       return res.status(400).json({ message: "Champs manquants" });

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ArtisanCard from "../components/ArtisanCard";
 import { apiGet } from "../services/api";
+import { apiPost } from "../services/api";
 
 export default function ArtisanDetail() {
   const { id } = useParams();
@@ -9,6 +10,34 @@ export default function ArtisanDetail() {
   const [artisan, setArtisan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState("");
+
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setStatus("");
+    setError("");
+
+    try {
+      await apiPost("/contact", {
+        ...form,
+        artisanId: artisan.id,
+      });
+
+      setStatus("Message envoyé avec succès !");
+      setForm({ name: "", email: "", subject: "", message: "" });
+    } catch (err) {
+      setError("Erreur lors de l'envoi du message.");
+    }
+  }
 
   useEffect(() => {
     async function load() {
@@ -109,15 +138,24 @@ export default function ArtisanDetail() {
           </div>
 
           <div className="border rounded p-3">
-            <h2 className="h4">Contacter l’artisan</h2>
+            <h2 className="h4">Contacter l'artisan</h2>
 
-            {/* Pour l'instant on ne fait pas encore POST /contact */}
-            <form onSubmit={(e) => e.preventDefault()}>
+
+            <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label className="form-label" htmlFor="name">
                   Nom
                 </label>
-                <input id="name" className="form-control" type="text" required />
+                <input
+                  id="name"
+                  className="form-control"
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={(e) =>
+                    setForm({ ...form, name: e.target.value })
+                  }
+                />
               </div>
 
               <div className="mb-3">
@@ -129,6 +167,10 @@ export default function ArtisanDetail() {
                   className="form-control"
                   type="email"
                   required
+                  value={form.email}
+                  onChange={(e) =>
+                    setForm({ ...form, email: e.target.value })
+                  }
                 />
               </div>
 
@@ -141,6 +183,10 @@ export default function ArtisanDetail() {
                   className="form-control"
                   type="text"
                   required
+                  value={form.subject}
+                  onChange={(e) =>
+                    setForm({ ...form, subject: e.target.value })
+                  }
                 />
               </div>
 
@@ -153,16 +199,18 @@ export default function ArtisanDetail() {
                   className="form-control"
                   rows="5"
                   required
+                  value={form.message}
+                  onChange={(e) =>
+                    setForm({ ...form, message: e.target.value })
+                  }
                 />
               </div>
 
               <button className="btn btn-primary" type="submit">
                 Envoyer
               </button>
-
-              <p className="text-muted mt-2 mb-0">
-                (Activation de l’envoi email à l’étape suivante : POST /contact)
-              </p>
+              {status && <p className="text-success mt-2">{status}</p>}
+              {error && <p className="text-danger mt-2">{error}</p>}
             </form>
           </div>
         </div>
