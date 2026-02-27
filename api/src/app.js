@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const categorieRoutes = require("./routes/categorie.routes");
 const artisanRoutes = require("./routes/artisan.routes");
+const contactRoutes = require("./routes/contact.routes");
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 
 app.use("/categories", categorieRoutes);
 app.use("/artisans", artisanRoutes);
+app.use("/contact", contactRoutes);
 
 module.exports = app;
