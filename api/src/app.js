@@ -46,7 +46,7 @@ app.use(
 
       if (allowedOrigins.includes(origin)) return cb(null, true);
 
-      console.log("CORS refusé pour origin =", origin);
+      console.log("CORS CHECK", { origin, allowedOrigins });
       return cb(new Error("CORS non autorisé"));
     },
     credentials: true,
