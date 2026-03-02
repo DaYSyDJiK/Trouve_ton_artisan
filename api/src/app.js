@@ -57,7 +57,6 @@ app.use(
   })
 );
 
-app.options("*", cors());
 
 // Parser JSON
 
