@@ -31,25 +31,30 @@ app.use(helmet());
   - Front en production (Vercel)
 */
 
+const cors = require("cors");
+
 const allowedOrigins = [
+  process.env.FRONT_URL,
+  process.env.CLIENT_URL,
   "http://localhost:5173",
-  process.env.FRONT_URL, // URL Vercel en production
-].filter(Boolean); // enlève les valeurs undefined
+].filter(Boolean);
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      // autorise les requêtes sans origin (Postman, curl)
-      if (!origin) return callback(null, true);
+    origin(origin, cb) {
+      // Requêtes sans origin (Postman, curl) => OK
+      if (!origin) return cb(null, true);
 
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("CORS non autorisé"));
-      }
+      if (allowedOrigins.includes(origin)) return cb(null, true);
+
+      console.log("CORS refusé pour origin =", origin);
+      return cb(new Error("CORS non autorisé"));
     },
+    credentials: true,
   })
 );
+
+app.options("*", cors());
 
 // Parser JSON
 
