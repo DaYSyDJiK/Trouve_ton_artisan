@@ -31,7 +31,6 @@ app.use(helmet());
   - Front en production (Vercel)
 */
 
-const cors = require("cors");
 
 const allowedOrigins = [
   process.env.FRONT_URL,
