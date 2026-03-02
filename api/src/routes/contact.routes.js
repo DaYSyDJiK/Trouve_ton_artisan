@@ -49,6 +49,7 @@ router.post("/", contactLimiter, async (req, res) => {
       text: mailText,
       replyTo: email,
     });
+    console.log("Sending to artisan email =", artisan.email);
 
     return res.json({ ok: true, message: "Email envoyé" });
   } catch (e) {
