@@ -23,12 +23,13 @@ export default function ArtisanDetail() {
 
   const [status, setStatus] = useState("");
 
-
+  console.log("SUBMIT START", form, artisan?.id);
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus("");
     setError("");
 
+    console.log("POSTING TO /contact...");
     try {
       await apiPost("/contact", {
         ...form,
@@ -38,7 +39,8 @@ export default function ArtisanDetail() {
       setStatus("Message envoyé avec succès !");
       setForm({ name: "", email: "", subject: "", message: "" });
     } catch (err) {
-      setError("Erreur lors de l'envoi du message.");
+      console.error("CONTACT ERROR:", err);
+      setError(err.message || "Erreur lors de l'envoi du message.");
     }
   }
 

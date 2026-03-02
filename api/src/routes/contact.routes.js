@@ -15,9 +15,10 @@ const contactLimiter = rateLimit({
 });
 
 router.post("/", contactLimiter, async (req, res) => {
+  console.log("POST /contact body =", req.body);
   try {
     const { name, email, subject, message, artisanId } = req.body;
-    
+
     // 1) validations simples
     if (!name || !email || !subject || !message || !artisanId) {
       return res.status(400).json({ message: "Champs manquants" });
@@ -52,7 +53,7 @@ router.post("/", contactLimiter, async (req, res) => {
     return res.json({ ok: true, message: "Email envoyé" });
   } catch (e) {
     console.error("POST /contact error:", e);
-    return res.status(500).json({ message: "Erreur serveur", error: e.message });
+res.status(500).json({ message: "Erreur serveur", error: e.message });
   }
 });
 
