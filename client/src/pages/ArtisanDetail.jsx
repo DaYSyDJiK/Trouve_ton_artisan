@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import ArtisanCard from "../components/ArtisanCard";
 import { apiGet } from "../services/api";
 import { apiPost } from "../services/api";
+import placeholder from "../assets/placeholder.jpg";
 
 export default function ArtisanDetail() {
   const { id } = useParams();
@@ -10,6 +11,8 @@ export default function ArtisanDetail() {
   const [artisan, setArtisan] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const imageUrl = artisan.image || placeholder;
 
   const [form, setForm] = useState({
     name: "",
@@ -84,10 +87,6 @@ export default function ArtisanDetail() {
   const specialite = artisan?.Specialite?.nom || "—";
   const categorie = artisan?.Specialite?.Categorie?.nom || "—";
 
-  // Fallback image : si null => placeholder
-  const imageUrl =
-    artisan.image ||
-    "https://via.placeholder.com/800x450?text=Artisan";
 
   return (
     <section className="container my-4">
