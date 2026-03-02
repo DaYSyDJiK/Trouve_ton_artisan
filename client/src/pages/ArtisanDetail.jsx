@@ -12,7 +12,7 @@ export default function ArtisanDetail() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const imageUrl = artisan.image || placeholder;
+
 
   const [form, setForm] = useState({
     name: "",
@@ -86,7 +86,7 @@ export default function ArtisanDetail() {
 
   const specialite = artisan?.Specialite?.nom || "—";
   const categorie = artisan?.Specialite?.Categorie?.nom || "—";
-
+  const imageUrl = artisan?.image || placeholder;
 
   return (
     <section className="container my-4">
