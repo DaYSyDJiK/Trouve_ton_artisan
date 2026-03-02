@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { Artisan } = require("../models");
-const { sendMail } = require("../services/mailer");
+const { sendMail } = require("../services/brevoMailer");
 const rateLimit = require("express-rate-limit");
 
 
