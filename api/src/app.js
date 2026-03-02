@@ -33,23 +33,27 @@ app.use(helmet());
 
 
 const allowedOrigins = [
-  process.env.FRONT_URL,
-  process.env.CLIENT_URL,
+  process.env.FRONT_URL,      // https://xxx.vercel.app
   "http://localhost:5173",
 ].filter(Boolean);
 
 app.use(
   cors({
     origin(origin, cb) {
-      // Requêtes sans origin (Postman, curl) => OK
+      // Postman/curl => pas d'origin
       if (!origin) return cb(null, true);
 
-      if (allowedOrigins.includes(origin)) return cb(null, true);
+      const isExactAllowed = allowedOrigins.includes(origin);
+      const isVercel = origin.endsWith(".vercel.app"); // autorise previews + prod
 
-      console.log("CORS CHECK", { origin, allowedOrigins });
-      return cb(new Error("CORS non autorisé"));
+      // Log utile
+      if (!isExactAllowed && !isVercel) {
+        console.log("CORS REFUSÉ:", { origin, allowedOrigins });
+        return cb(null, false); // <-- pas d'erreur throw
+      }
+
+      return cb(null, true);
     },
-    credentials: true,
   })
 );
 
