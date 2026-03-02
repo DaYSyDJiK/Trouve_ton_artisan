@@ -7,6 +7,7 @@ const artisanRoutes = require("./routes/artisan.routes");
 const contactRoutes = require("./routes/contact.routes");
 
 const app = express();
+app.set("trust proxy", 1);
 
 /*
   
