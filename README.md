@@ -174,14 +174,3 @@ Conformité WCAG 2.1
 
 Projet réalisé par Maxime Gauthier dans le cadre d’un projet pédagogique
 
-
-
----
-
-# Ce README est :
-
-✔ Conforme au brief  
-✔ Professionnel  
-✔ Structuré  
-✔ Lisible par un recruteur  
-✔ Adapté pour GitHub  
