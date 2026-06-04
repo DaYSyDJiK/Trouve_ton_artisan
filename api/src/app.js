@@ -5,6 +5,7 @@ const helmet = require("helmet");
 const categorieRoutes = require("./routes/categorie.routes");
 const artisanRoutes = require("./routes/artisan.routes");
 const contactRoutes = require("./routes/contact.routes");
+const authRoutes = require("./routes/auth.routes");
 
 const app = express();
 app.set("trust proxy", 1);
@@ -71,5 +72,5 @@ app.get("/health", (req, res) => res.json({ ok: true }));
 app.use("/categories", categorieRoutes);
 app.use("/artisans", artisanRoutes);
 app.use("/contact", contactRoutes);
-
+app.use("/auth", authRoutes);
 module.exports = app;
