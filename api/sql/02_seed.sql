@@ -114,3 +114,9 @@ VALUES
 ('CM Graphisme', 15, 4.4, 'Valence',
 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus eleifend ante sem, id volutpat massa fermentum nec. Praesent volutpat scelerisque mauris, quis sollicitudin tellus sollicitudin.',
 'contact@cm-graphisme.com', 'https://cm-graphisme.com', NULL, 0);
+
+-- 4) ADMIN (
+
+INSERT INTO admin (email, password) VALUES
+
+('test@test.com', '$2b$10$e7MDgsgqhFskN7PUC6duAOkikCossOXmXAnXCh39aifaqfK1MFiWK');

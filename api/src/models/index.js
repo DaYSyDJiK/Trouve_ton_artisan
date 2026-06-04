@@ -3,6 +3,7 @@ const sequelize = require("../config/database");
 const Categorie = require("./Categorie");
 const Specialite = require("./Specialite");
 const Artisan = require("./Artisan");
+const Admin = require("./Admin");
 
 // Catégorie -> Spécialités (à valider selon le vrai nom de colonne FK)
 Categorie.hasMany(Specialite, { foreignKey: "categorie_id" });
@@ -12,4 +13,5 @@ Specialite.belongsTo(Categorie, { foreignKey: "categorie_id" });
 Specialite.hasMany(Artisan, { foreignKey: "specialite_id" });
 Artisan.belongsTo(Specialite, { foreignKey: "specialite_id" });
 
-module.exports = { sequelize, Categorie, Specialite, Artisan };
+// Admin
+module.exports = { sequelize, Categorie, Specialite, Artisan, Admin };
