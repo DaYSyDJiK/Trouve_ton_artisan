@@ -16,6 +16,10 @@ const deleteArtisan = async (req, res) => {
 
 const createArtisan = async (req, res) => {
     const { nom, note, ville, description, email, siteWeb, image, isTop, specialiteId } = req.body;
+    
+    if (!nom || !ville || !description || !email || !specialiteId) {
+        return res.status (400).json({ message : 'Champs requis manquants' });
+    }
     try {
         const newArtisan = await Artisan.create({ nom, note, ville, description, email, siteWeb, image, isTop, specialiteId });
         return res.status(201).json(newArtisan);
