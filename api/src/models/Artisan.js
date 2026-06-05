@@ -6,7 +6,7 @@ const Artisan = sequelize.define(
   {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nom: { type: DataTypes.STRING(150), allowNull: false },
-    note: { type: DataTypes.DECIMAL(2, 1), allowNull: false },
+    note: { type: DataTypes.DECIMAL(2, 1), allowNull: false, defaultValue: 0 },
     ville: { type: DataTypes.STRING(100), allowNull: false },
 
     // en BDD c'est "description"
