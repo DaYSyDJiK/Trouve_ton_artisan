@@ -25,4 +25,8 @@ const login = async (req, res) => {
     res.json({ token });
 }
 
-module.exports = { login };
+const test = (req, res) => {
+    res.json({ message: "Accès admin autorisé", admin: req.admin });
+}
+
+module.exports = { login, test };
