@@ -9,7 +9,8 @@ router.delete('/:id', requireAdmin, adminArtisanController.deleteArtisan);
 // CREATE /admin/artisans
 router.post('/', requireAdmin, adminArtisanController.createArtisan);
 
-
+// UPDATE /admin/artisans/:id
+router.put('/:id', requireAdmin, adminArtisanController.updateArtisan);
 
 
 

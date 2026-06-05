@@ -24,4 +24,19 @@ const createArtisan = async (req, res) => {
     }
 }
 
-module.exports = { deleteArtisan, createArtisan };
+const updateArtisan = async (req, res) => {
+    const { id } = req.params;
+    const { nom, note, ville, description, email, siteWeb, image, isTop, specialiteId } = req.body;
+    try {
+        const artisan = await Artisan.findByPk(id);
+        if (!artisan){
+            return res.status(404).json({ message : 'Artisan non trouvé' });
+        }
+        await artisan.update({ nom, note, ville, description, email, siteWeb, image, isTop, specialiteId });
+        return res.status(200).json(artisan);
+    } catch (error) {
+        return res.status(500).json({ message : 'Erreur serveur' });
+    }
+}
+
+module.exports = { deleteArtisan, createArtisan, updateArtisan };
