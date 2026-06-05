@@ -6,6 +6,8 @@ const categorieRoutes = require("./routes/categorie.routes");
 const artisanRoutes = require("./routes/artisan.routes");
 const contactRoutes = require("./routes/contact.routes");
 const authRoutes = require("./routes/auth.routes");
+const adminArtisanRoutes = require('./routes/adminArtisan.routes');
+
 
 const app = express();
 app.set("trust proxy", 1);
@@ -73,4 +75,5 @@ app.use("/categories", categorieRoutes);
 app.use("/artisans", artisanRoutes);
 app.use("/contact", contactRoutes);
 app.use("/auth", authRoutes);
+app.use("/admin/artisans", adminArtisanRoutes);
 module.exports = app;
