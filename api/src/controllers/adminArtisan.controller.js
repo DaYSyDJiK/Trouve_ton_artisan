@@ -14,4 +14,14 @@ const deleteArtisan = async (req, res) => {
     }
 }
 
-module.exports = { deleteArtisan };
+const createArtisan = async (req, res) => {
+    const { nom, note, ville, description, email, siteWeb, image, isTop, specialiteId } = req.body;
+    try {
+        const newArtisan = await Artisan.create({ nom, note, ville, description, email, siteWeb, image, isTop, specialiteId });
+        return res.status(201).json(newArtisan);
+    } catch (error) {
+        return res.status(500).json({ message : 'Erreur serveur' });
+    }
+}
+
+module.exports = { deleteArtisan, createArtisan };
