@@ -9,6 +9,8 @@ import DonneesPersonnelles from "./pages/legal/DonneesPersonnelles";
 import Accessibilite from "./pages/legal/Accessibilite";
 import Cookies from "./pages/legal/Cookies";
 import ArtisanDetail from "./pages/ArtisanDetail";
+import AdminLogin from "./pages/admin/AdminLogin";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 export default function App() {
   return (
@@ -29,6 +31,11 @@ export default function App() {
           />
           <Route path="/legal/accessibilite" element={<Accessibilite />} />
           <Route path="/legal/cookies" element={<Cookies />} />
+
+        {/* Pages admin */}      
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
 
           <Route path="*" element={<NotFound />} />
         </Route>

@@ -1,7 +1,7 @@
 const API_URL = import.meta.env.VITE_API_URL;
 
 if (!API_URL) {
-  console.warn("⚠️ VITE_API_URL est manquant. Ajoute-le sur Vercel.");
+  console.warn("⚠️ VITE_API_URL est manquant. Ajoutez-le sur Vercel.");
 }
 
 async function parseJsonSafe(res) {
@@ -37,4 +37,39 @@ export async function apiPost(path, body) {
     throw new Error(data?.error || data?.message || `Erreur API (${res.status})`);
   }
   return data;
+}
+
+
+// Récupérér le token d'authentification depuis le localStorage
+function getAuthHeaders() {
+  const token = localStorage.getItem("adminToken");
+  return {
+    "Content-Type": "application/json",
+    Authorization : `Bearer ${token}`,
+  };
+}
+
+
+// Fonctions admin
+
+export async function apiAdminDelete(path) {
+  const res = await fetch(`${API_URL}${path}`, {
+    method: "DELETE",
+    headers: getAuthHeaders(),
+  });
+
+  const data = await res.json();
+
+  return data;
+}
+
+
+
+export async function apiAdminPost(path, body){
+  // Fetch avec la methode POST
+
+  // Header : getAuthHeaders()
+
+  // Body : JSON.stringify(body)
+
 }
