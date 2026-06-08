@@ -57,8 +57,8 @@ export async function apiAdminDelete(path) {
     method: "DELETE",
     headers: getAuthHeaders(),
   });
+  const data = await parseJsonSafe(res);
 
-  const data = await res.json();
 
   return data;
 }
@@ -67,9 +67,16 @@ export async function apiAdminDelete(path) {
 
 export async function apiAdminPost(path, body){
   // Fetch avec la methode POST
+const res = await fetch(`${API_URL}${path}`, {
+    method: "POST",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body),
+  });
+  const data = await parseJsonSafe(res);
 
-  // Header : getAuthHeaders()
 
-  // Body : JSON.stringify(body)
-
+  if (!res.ok) {
+    throw new Error(data?.error || data?.message || `Erreur API (${res.status})`);
+  }
+  return data;
 }

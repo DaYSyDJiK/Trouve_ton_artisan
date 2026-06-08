@@ -7,6 +7,7 @@ const artisanRoutes = require("./routes/artisan.routes");
 const contactRoutes = require("./routes/contact.routes");
 const authRoutes = require("./routes/auth.routes");
 const adminArtisanRoutes = require('./routes/adminArtisan.routes');
+const specialiteRoutes = require('./routes/specialite.routes');
 
 
 const app = express();
@@ -36,7 +37,8 @@ app.use(helmet());
 
 
 const allowedOrigins = [
-  process.env.FRONT_URL,      // https://xxx.vercel.app
+  //process.env.FRONT_URL,      // https://xxx.vercel.app
+  process.env.CLIENT_URL,     // https://xxx.vercel.app ou http://localhost:5173
   "http://localhost:5173",
 ].filter(Boolean);
 
@@ -76,4 +78,5 @@ app.use("/artisans", artisanRoutes);
 app.use("/contact", contactRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin/artisans", adminArtisanRoutes);
+app.use("/specialites", specialiteRoutes);
 module.exports = app;

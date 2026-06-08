@@ -11,6 +11,10 @@ import Cookies from "./pages/legal/Cookies";
 import ArtisanDetail from "./pages/ArtisanDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminArtisans from "./pages/admin/AdminArtisans";
+import AdminCreateArtisan from "./pages/admin/AdminCreateArtisan";
+import AdminEditArtisan from "./pages/admin/AdminEditArtisan";
+
 
 export default function App() {
   return (
@@ -32,13 +36,16 @@ export default function App() {
           <Route path="/legal/accessibilite" element={<Accessibilite />} />
           <Route path="/legal/cookies" element={<Cookies />} />
 
-        {/* Pages admin */}      
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
 
 
           <Route path="*" element={<NotFound />} />
         </Route>
+        {/* Pages admin */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/artisans" element={<AdminArtisans />} />
+        <Route path="/admin/artisans/create" element={<AdminCreateArtisan />} />
+        <Route path="/admin/artisans/:id/edit" element={<AdminEditArtisan />} />
       </Routes>
     </BrowserRouter>
   );
