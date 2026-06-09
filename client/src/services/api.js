@@ -80,3 +80,18 @@ const res = await fetch(`${API_URL}${path}`, {
   }
   return data;
 }
+
+export async function apiAdminPut(path, body) {
+  // Fetch avec la methode PUT
+  const res = await fetch(`${API_URL}${path}`, {
+    method: "PUT",
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body),
+  });
+  const data = await parseJsonSafe(res);
+
+  if (!res.ok) {
+    throw new Error(data?.error || data?.message || `Erreur API (${res.status})`);
+  }
+  return data;
+}

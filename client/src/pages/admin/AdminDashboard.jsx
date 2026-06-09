@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 export default function AdminDashboard() {
     return (
-        <div className="admin-dashboard">
+        <div className="m-3 admin-dashboard">
             <h2>Tableau de bord Admin</h2>
             <p>Bienvenue sur le tableau de bord de l'administration. Ici, vous pouvez gérer les artisans, les catégories et les demandes de contact.</p>
             <ul>

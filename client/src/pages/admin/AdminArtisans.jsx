@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { apiGet, apiAdminDelete } from "../../services/api";
+import { useNavigate }  from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function AdminArtisans() {
 
     const [artisans, setArtisans] = useState([]);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -37,18 +40,19 @@ export default function AdminArtisans() {
 
     const handleEdit = (id) => {
         // console.log("Modifier artisan", id);
+        navigate(`/admin/artisans/${id}/edit`);
     };
 
     return (
-        <div>
-            <div className="admin-artisans">
+        <div className="m-3">
+            <div className="my-3 admin-artisans">
                 <h2>Créer un nouvel artisan</h2>
                 <Link to="/admin/artisans/create" className="btn btn-success">Créer</Link>
             </div>
 
-            <div className="admin-artisans">
+            <div className="my-3 admin-artisans">
                 <h2>Gérer les artisans</h2>
-                <table>
+                <table className="table">
                     <thead>
                         <tr>
                             <th>Nom</th>

@@ -1,46 +1,56 @@
 import { useState, useEffect } from "react";
 import { apiGet, apiAdminPost } from "../../services/api";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function AdminCreateArtisan() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [specialites, setSpecialites] = useState([]);
+    const [specialites, setSpecialites] = useState([]);
 
-  const [form, setForm] = useState({
-    nom: "",
-    ville: "",
-    description: "",
-    email: "",
-    siteWeb: "",
-    image: "",
-    specialiteId: "",
-  });
+    const [form, setForm] = useState({
+        nom: "",
+        ville: "",
+        description: "",
+        email: "",
+        siteWeb: "",
+        image: "",
+        specialiteId: "",
+    });
 
-  useEffect(() => {
-    const loadSpecialites = async () => {
-      try {
-        const data = await apiGet("/specialites");
-        setSpecialites(data);
-      } catch (err) {
-        console.error("Erreur lors du chargement des spécialités :", err);
-      }
+    useEffect(() => {
+        const loadSpecialites = async () => {
+            try {
+                const data = await apiGet("/specialites");
+                setSpecialites(data);
+            } catch (err) {
+                console.error("Erreur lors du chargement des spécialités :", err);
+            }
+        };
+
+        loadSpecialites();
+    }, []);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const newArtisan = await apiAdminPost("/admin/artisans", form);
+
+        navigate("/admin/artisans");
     };
 
-    loadSpecialites();
-  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    return (
+    
+    <>
+        <div className="m-3 admin-create-artisan decoration-none">
 
-    const newArtisan = await apiAdminPost("/admin/artisans", form);
+            <Link to="/admin/artisans">Retour à la liste des artisans</Link>
 
-    navigate("/admin/artisans");
-  };
-
-
-return (
-    <div className="admin-create-artisan">
+        </div>
+    
+    
+    <div className="m-3 admin-create-artisan">
         <h2>Créer un nouvel artisan</h2>
         <form onSubmit={handleSubmit}>
             <div>
@@ -112,5 +122,6 @@ return (
             <button type="submit">Créer l'artisan</button>
         </form>
     </div>
-);
+    </>
+    );
 }

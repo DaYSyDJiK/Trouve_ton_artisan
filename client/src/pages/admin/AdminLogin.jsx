@@ -28,7 +28,7 @@ export default function AdminLogin() {
     };
 
     return (
-        <div className="admin-login">
+        <div className="m-3 text-center admin-login">
             <h2>Connexion Admin</h2>
             <form onSubmit={handleSubmit}>
                 <div>
