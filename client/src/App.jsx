@@ -14,6 +14,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminArtisans from "./pages/admin/AdminArtisans";
 import AdminCreateArtisan from "./pages/admin/AdminCreateArtisan";
 import AdminEditArtisan from "./pages/admin/AdminEditArtisan";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 export default function App() {
@@ -37,15 +38,32 @@ export default function App() {
           <Route path="/legal/cookies" element={<Cookies />} />
 
 
-
           <Route path="*" element={<NotFound />} />
         </Route>
+
         {/* Pages admin */}
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/dashboard" element={<AdminDashboard />} />
-        <Route path="/admin/artisans" element={<AdminArtisans />} />
-        <Route path="/admin/artisans/create" element={<AdminCreateArtisan />} />
-        <Route path="/admin/artisans/:id/edit" element={<AdminEditArtisan />} />
+
+        <Route path="/admin/dashboard" element={
+          <ProtectedRoute>
+            <AdminDashboard />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/artisans" element={
+          <ProtectedRoute>
+            <AdminArtisans />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/artisans/create" element={
+          <ProtectedRoute>
+            <AdminCreateArtisan />
+          </ProtectedRoute>
+        } />
+        <Route path="/admin/artisans/:id/edit" element={
+          <ProtectedRoute>
+            <AdminEditArtisan />
+          </ProtectedRoute>
+        } />
       </Routes>
     </BrowserRouter>
   );

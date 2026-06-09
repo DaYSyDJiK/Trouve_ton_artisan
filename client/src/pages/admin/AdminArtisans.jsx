@@ -1,12 +1,30 @@
 import { useState, useEffect } from "react";
 import { apiGet, apiAdminDelete } from "../../services/api";
-import { useNavigate }  from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export default function AdminArtisans() {
 
     const [artisans, setArtisans] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
+    const [message, setMessage] = useState(location.state?.message || "");
+    const [messageType, setMessageType] = useState(location.state?.messageType || "");
+
+    const showMessage = (text, type) => {
+        setMessage(text);
+        setMessageType(type);
+    };
+
+
+    useEffect(() => {
+        if (message) {
+            const timer = setTimeout(() => {
+                setMessage("");
+            }, 3000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [message]);
 
 
     useEffect(() => {
@@ -17,7 +35,7 @@ export default function AdminArtisans() {
                 setArtisans(data);
             }
             catch (err) {
-                console.error("Erreur lors du chargement des artisans :", err);
+                showMessage("Erreur lors du chargement des artisans", "danger");
             }
         };
 
@@ -28,13 +46,18 @@ export default function AdminArtisans() {
     const handleDelete = async (id) => {
         // console.log("Supprimer artisan", id);
 
+        // Confirmation avant suppression
+        if (!window.confirm("Supprimer cet artisan ?")) {
+            return;
+        }
         try {
             console.log("Suppression de", id);
             await apiAdminDelete(`/admin/artisans/${id}`);
             const updatedArtisans = artisans.filter(artisan => artisan.id !== id);
             setArtisans(updatedArtisans);
+            showMessage("Artisan supprimé avec succès", "success");
         } catch (err) {
-            console.error("Erreur lors de la suppression de l'artisan :", err);
+            showMessage("Erreur lors de la suppression", "danger");
         }
     };
 
@@ -43,15 +66,28 @@ export default function AdminArtisans() {
         navigate(`/admin/artisans/${id}/edit`);
     };
 
+
     return (
-        <div className="m-3">
-            <div className="my-3 admin-artisans">
-                <h2>Créer un nouvel artisan</h2>
-                <Link to="/admin/artisans/create" className="btn btn-success">Créer</Link>
+        <div className="m-5 mx-auto text-center container bg-dark text-white p-4 rounded">
+            <div className="d-flex justify-content-center gap-3 mb-4">
+                <Link
+                    to="/admin/dashboard"
+                    className="btn btn-primary"
+                >
+                    Dashboard
+                </Link>
+
+                <Link
+                    to="/admin/artisans/create"
+                    className="btn btn-success"
+                >
+                    Créer un artisan
+                </Link>
             </div>
 
             <div className="my-3 admin-artisans">
-                <h2>Gérer les artisans</h2>
+                <h2 className="mb-3 mt-5">Gérer les artisans</h2>
+                {message && <p className={`alert alert-${messageType}`}>{message}</p>}
                 <table className="table">
                     <thead>
                         <tr>

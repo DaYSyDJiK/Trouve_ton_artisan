@@ -1,176 +1,233 @@
-# Trouve_ton_artisan
+# Trouve ton artisan
 
-Plateforme web développée pour la Région Auvergne-Rhône-Alpes permettant de rechercher un artisan par catégorie, consulter sa fiche détaillée et le contacter via un formulaire sécurisé.
+Application web développée dans le cadre de la formation Développeur Web FullStack.
+
+Cette plateforme permet aux utilisateurs de rechercher un artisan par catégorie, consulter sa fiche détaillée et contacter un artisan. Une interface d'administration sécurisée permet également la gestion complète des artisans.
+
+---
+
+## Fonctionnalités
+
+### Partie publique
+
+* Consultation des artisans
+* Recherche par catégorie
+* Recherche par mot-clé
+* Consultation de la fiche détaillée d'un artisan
+* Affichage des artisans mis en avant
+* Formulaire de contact sécurisé
+
+### Partie administration
+
+Comment acceder au menu admin : [/admin/login](http://localhost:5173/admin/login)
+* Authentification administrateur (JWT)
+* Tableau de bord administrateur
+* Création d'un artisan
+* Modification d'un artisan
+* Suppression d'un artisan
+* Protection des routes administrateur
 
 ---
 
 ## Technologies utilisées
 
 ### Frontend
-- React (Vite)
-- React Router
-- Bootstrap
-- Sass
+
+* React
+* Vite
+* React Router
+* Bootstrap
+* Fetch API
 
 ### Backend
-- Node.js
-- Express
-- Sequelize
-- MySQL
 
-### Autres
-- Nodemailer
-- Helmet
-- CORS
-- Rate limiting
+* Node.js
+* Express
+* Sequelize
+* MySQL
+
+### Sécurité
+
+* JSON Web Token (JWT)
+* Helmet
+* CORS
+* Express Rate Limit
+
+### Services
+
+* Nodemailer
 
 ---
 
-## Structure du projet
+## Architecture du projet
 
 Trouve-ton-artisan/
 │
-├── api/ → Backend Express + Sequelize
-├── client/ → Frontend React (Vite)
-├── README.md
-
-
----
-
-## Prérequis
-
-Avant d’installer le projet, assurez-vous d’avoir :
-
-- Node.js (v18 ou supérieur recommandé)
-- npm
-- MySQL ou MariaDB
-- XAMPP (si utilisé pour MySQL)
-
----
-
-## 🗄 Base de données
-
-1. Créer une base de données nommée :
-2. Exécuter les scripts SQL fournis :
-api/sql/01_create.sql
-api/sql/02_seed.sql
-
-
----
-
-## Configuration des variables d’environnement
-
-### Backend – `api/.env`
-
-Créer un fichier `.env` dans le dossier `api` :
-
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=trouve_ton_artisan
-
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USER=your-email@gmail.com
-
-MAIL_PASS=your-app-password
-
-
----
-
-### Frontend – `client/.env`
-
-Créer un fichier `.env` dans le dossier `client` :
-
-VITE_API_URL=http://localhost:5000
-
+├── api/
+│ ├── src/
+│ ├── sql/
+│ └── .env
+│
+├── client/
+│ ├── src/
+│ └── .env
+│
+└── README.md
 
 ---
 
 ## Installation
 
+### Cloner le projet
+
+```bash
+git clone <https://github.com/DaYSyDJiK/Trouve_ton_artisan>
+```
+
 ### Installer le backend
 
+```bash
 cd api
 npm install
+```
 
 ### Installer le frontend
 
+```bash
 cd client
 npm install
+```
 
+---
 
-## Démarrer le backend
+## Configuration de la base de données
+
+Créer une base de données :
+
+```sql
+trouve_ton_artisan
+```
+
+Puis exécuter :
+
+```txt
+api/sql/01_create.sql
+api/sql/02_seed.sql
+```
+
+---
+
+## Variables d'environnement
+
+### Backend (`api/.env`)
+
+```env
+PORT=5000
+
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=trouve_ton_artisan
+
+JWT_SECRET=votre_secret_jwt
+
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USER=your-email@gmail.com
+MAIL_PASS=your-app-password
+```
+
+### Frontend (`client/.env`)
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+---
+
+## Lancement du projet
+
+### Backend
+
+```bash
 cd api
 npm run dev
+```
 
-## Le serveur sera accessible sur :
+Serveur disponible sur :
 
+```txt
 http://localhost:5000
+```
 
+### Frontend
 
-## Démarrer le frontend
+```bash
 cd client
 npm run dev
+```
 
-## Le site sera accessible sur :
+Application disponible sur :
 
+```txt
 http://localhost:5173
+```
 
---- 
+---
 
-Routes principales de l’API
+## Routes API principales
 
+### Public
+
+```http
 GET /health
-
 GET /categories
-
+GET /specialites
 GET /artisans
-
 GET /artisans/:id
-
-GET /artisans?search=
-
 GET /artisans/top
-
 POST /contact
+```
+
+### Administration
+
+```http
+POST /auth/login
+
+POST /admin/artisans
+PUT /admin/artisans/:id
+DELETE /admin/artisans/:id
+```
 
 ---
 
-### Sécurité
+## Sécurité
 
-Utilisation de variables d’environnement
-
-Validation des données côté serveur
-
-Protection contre les injections SQL via Sequelize
-
-Configuration CORS
-
-Helmet pour sécurisation des headers
-
-Rate limiting
+* Authentification JWT
+* Middleware de protection des routes administrateur
+* Validation des données côté serveur
+* Protection contre les injections SQL via Sequelize
+* Configuration CORS
+* Helmet
+* Rate limiting
 
 ---
 
-### Accessibilité
+## Accessibilité
 
-Structure sémantique correcte
-
-Navigation clavier fonctionnelle
-
-Labels associés aux champs
-
-Attribut alt sur les images
-
-Contraste respecté
-
-Conformité WCAG 2.1
+* Structure HTML sémantique
+* Navigation clavier
+* Labels associés aux champs de formulaire
+* Contrastes respectés
+* Images avec attribut alt
 
 ---
 
-### Auteur
+## Auteur
 
-Projet réalisé par Maxime Gauthier dans le cadre d’un projet pédagogique
+Projet réalisé par Maxime Gauthier dans le cadre de la formation Développeur Web et Web Mobile (DWWM).
 
+![Image Menu De Connexion Admin](image-3.png)
+![Image Tableau Gestion Artisans](image.png)
+![Image Création Artisan](image-1.png)
+![Image Modification Artisan](image-2.png)

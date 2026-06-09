@@ -28,29 +28,45 @@ export default function AdminLogin() {
     };
 
     return (
-        <div className="m-3 text-center admin-login">
+        <div className="m-5 mx-auto text-center container bg-dark text-white p-4 rounded">
             <h2>Connexion Admin</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+            <form onSubmit={handleSubmit} className="mx-auto"
+                style={{ maxWidth: "500px" }}>
+                <div className="row mb-3">
+                    <label className="col-sm-3 col-form-label" style={{ width: "120px" }}>
+                        Email
+                    </label>
+
+                    <div className="col-sm-9">
+                        <input
+                            type="email"
+                            className="form-control"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
                 </div>
-                <div>
-                    <label>Mot de passe</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
+
+                <div className="row mb-3">
+                    <label className="col-sm-3 col-form-label" style={{ width: "120px" }}>
+                        Mot de passe
+                    </label>
+
+                    <div className="col-sm-9">
+                        <input
+                            type="password"
+                            className="form-control"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
                 </div>
                 {error && <p className="error">{error}</p>}
-                <button type="submit">Se connecter</button>
+                <button type="submit" className="btn btn-primary">
+                    Se connecter
+                </button>
             </form>
         </div>
     );
